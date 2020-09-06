@@ -14,6 +14,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "transacao")
@@ -30,20 +31,17 @@ public class Transacao implements Serializable {
 	@Column(name = "cnpj", nullable = false, length = 14)
 	private String cnpj;
 
-	@Column(name = "valor", nullable = false, length = 11, unique = true)
-	private String valor;
+	@Column(name = "valor", nullable = false)
+	private double valor;
 
 	@Column(name = "qdt_Parcelas", nullable = false)
-	private int qdt_Parcelas;
-
-	@Column(name = "cartao_id", nullable = false)
-	private int cartao_id;
+	private int qdtParcelas;
 
 	@Column(name = "juros", nullable = false)
-	private int juros;
+	private double juros;
 
 	@JsonBackReference
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne (fetch = FetchType.EAGER)
 	private  Cartao cartao;
 
 	public int getId() {
@@ -70,35 +68,28 @@ public class Transacao implements Serializable {
 		this.cnpj = cnpj;
 	}
 
-	public String getValor() {
+	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(String valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 
-	public int getQdt_Parcelas() {
-		return qdt_Parcelas;
+	public int getQdtParcelas() {
+		return qdtParcelas;
 	}
 
-	public void setQdt_Parcelas(int qdt_Parcelas) {
-		this.qdt_Parcelas = qdt_Parcelas;
+	public void setQdtParcelas(int qdtParcelas) {
+		this.qdtParcelas = qdtParcelas;
 	}
 
-	public int getCartao_id() {
-		return cartao_id;
-	}
 
-	public void setCartao_id(int cartao_id) {
-		this.cartao_id = cartao_id;
-	}
-
-	public int getJuros() {
+	public double getJuros() {
 		return juros;
 	}
 
-	public void setJuros(int juros) {
+	public void setJuros(double juros) {
 		this.juros = juros;
 	}
 
@@ -110,11 +101,6 @@ public class Transacao implements Serializable {
 		this.cartao = cartao;
 	}
 
-	@PreUpdate
-	public void preUpdate() {
-		dataTransacao = new Date();
-	}
-
 	@PrePersist
 	public void prePersist() {
 		dataTransacao = new Date();
@@ -122,12 +108,12 @@ public class Transacao implements Serializable {
 	@Override
 	 public String toString() {
 		return "Transacao[" + "id=" + id + ","
-				 + "data_Transacao=" + dataTransacao + ","
+				 + "dataTransacao=" + dataTransacao + ","
 				 + "cnpj=" + cnpj + ","
 				 + "valor=" + valor + ","
 				 + "juros=" + juros + ","
-				 + "cartao_id=" + cartao_id + ","
-				 + "qdt_Parcelas=" + qdt_Parcelas + "]";
+				 +" cartao=" + cartao + ","
+				 + "qdtParcelas=" + qdtParcelas + "]";
 
 	 }
 }
