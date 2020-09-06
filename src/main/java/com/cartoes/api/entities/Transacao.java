@@ -2,7 +2,6 @@ package com.cartoes.api.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,37 +19,41 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "transacao")
 public class Transacao implements Serializable {
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
 	@Column(name = "data_Transacao", nullable = false)
 	private Date dataTransacao;
 
-	@Column(name = "CNPJ", nullable = false, length = 14, unique = true)
-	private String CNPJ;
+	@Column(name = "cnpj", nullable = false, length = 14)
+	private String cnpj;
 
-	@Column(name = "valor", nullable = false)
-	private Double valor;
+	@Column(name = "valor", nullable = false, length = 11, unique = true)
+	private String valor;
 
 	@Column(name = "qdt_Parcelas", nullable = false)
-	private int qdtParcelas;
-	
+	private int qdt_Parcelas;
+
+	@Column(name = "cartao_id", nullable = false)
+	private int cartao_id;
+
 	@Column(name = "juros", nullable = false)
-	private Double juros;
-	
+	private int juros;
+
 	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Cartao cartao;
-	
+	@ManyToOne (fetch = FetchType.LAZY)
+	private  Cartao cartao;
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public Date getDataTransacao() {
 		return dataTransacao;
 	}
@@ -58,47 +61,55 @@ public class Transacao implements Serializable {
 	public void setDataTransacao(Date dataTransacao) {
 		this.dataTransacao = dataTransacao;
 	}
-	
+
 	public String getCnpj() {
-		return CNPJ;
+		return cnpj;
 	}
 
-	public void setCnpj(String CNPJ) {
-		this.CNPJ = CNPJ;
+	public void setCnpj(String cnpj) {
+		this.cnpj = cnpj;
 	}
-	
-	public double getValor() {
+
+	public String getValor() {
 		return valor;
 	}
 
-	public void setValor(double valor) {
+	public void setValor(String valor) {
 		this.valor = valor;
 	}
-	
-	public int getQdtParcelas() {
-		return qdtParcelas;
+
+	public int getQdt_Parcelas() {
+		return qdt_Parcelas;
 	}
 
-	public void setqdtParcelas(int qdtParcelas) {
-		this.qdtParcelas = qdtParcelas;
+	public void setQdt_Parcelas(int qdt_Parcelas) {
+		this.qdt_Parcelas = qdt_Parcelas;
 	}
-	
-	public double getJuros() {
+
+	public int getCartao_id() {
+		return cartao_id;
+	}
+
+	public void setCartao_id(int cartao_id) {
+		this.cartao_id = cartao_id;
+	}
+
+	public int getJuros() {
 		return juros;
 	}
 
-	public void setJuros(double juros) {
+	public void setJuros(int juros) {
 		this.juros = juros;
 	}
-	
+
 	public Cartao getCartao() {
 		return cartao;
 	}
 
-	public void Cartao(Cartao cartao) {
+	public void setCartao(Cartao cartao) {
 		this.cartao = cartao;
 	}
-	
+
 	@PreUpdate
 	public void preUpdate() {
 		dataTransacao = new Date();
@@ -108,10 +119,15 @@ public class Transacao implements Serializable {
 	public void prePersist() {
 		dataTransacao = new Date();
 	}
-	
 	@Override
-	public String toString() {
-		return "Transacao[" + "id=" + id + "," + "dataTransacao" + dataTransacao + "," + "CNPJ=" + CNPJ + "," + "valor=" + valor + ","
-				+ "qdtParcelas=" + qdtParcelas + "," + "juros=" + juros +  "]";
-	}
+	 public String toString() {
+		return "Transacao[" + "id=" + id + ","
+				 + "data_Transacao=" + dataTransacao + ","
+				 + "cnpj=" + cnpj + ","
+				 + "valor=" + valor + ","
+				 + "juros=" + juros + ","
+				 + "cartao_id=" + cartao_id + ","
+				 + "qdt_Parcelas=" + qdt_Parcelas + "]";
+
+	 }
 }
